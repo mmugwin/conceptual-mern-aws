@@ -35,7 +35,7 @@ app.get('/api/questions/:topic', async (req, res) => {
                 }    
             })
         } else {
-            const questionInfo = await db.collection('questions').find({ topic: topicName }).limit(1000).toArray( (err, result) => {
+            const questionInfo = await db.collection('questions').aggregate([{$match: {topic: topicName}},{$sample:{size:7}}]).toArray( (err, result) => {
                 if (err) {
                     res.status(400).send("Error fetching listings!");
                 } else {
